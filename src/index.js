@@ -6,7 +6,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
-    searchImg: document.querySelector('#search-box'),
+    searchImg: document.querySelector('#search-form'),
     onGallery: document.querySelector('.gallery'),
     watcher: document.querySelector('.watcher')
     // loadBtn: document.querySelector('.load-more'),
@@ -25,10 +25,11 @@ let page = 1;
 let currentValue = '';
 let list = [];
 
-refs.searchImg.addEventListener("input", debounce(onInputSearch, DEBOUNCE_DELAY));
+// refs.searchImg.addEventListener("submit", debounce(onInputSearch, DEBOUNCE_DELAY));
+refs.searchImg.addEventListener("submit", onInputSearch);
 // refs.loadBtn.addEventListener("click", debounce(loadMoreImgs, DEBOUNCE_DELAY));
 // refs.onGallery.addEventListener("submit", submitHandler);
-
+// console.log(refs.searchImg);
 
 // let observer = new IntersectionObserver(onEntry, {
 //     rootMargin: '200px',
@@ -66,8 +67,10 @@ function clearData() {
 };
 
 function onInputSearch(e) {
+    e.preventDefault();
     clearData();
-    currentValue = e.target.value.trim();
+    // currentValue = e.target.value.trim();
+    currentValue = e.target.elements.searchQuery.value.trim();
     if (currentValue === "") {
         clearData();
         return
@@ -153,6 +156,7 @@ function renderImgs(imgs) {
         `
     }).join("");
     refs.onGallery.innerHTML = markup;
+    // refs.onGallery.innerHTML = "";
     // refs.onGallery.insertAdjacentHTML("beforeend", markup);
 };
 
